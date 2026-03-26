@@ -3,19 +3,171 @@
 
 <head>
   <title>Convertidor</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #f0f0f0;
+    }
+    
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    h1 {
+      color: #333;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    h2 {
+      color: #ff6b6b;
+      margin-top: 0;
+    }
+    
+    textarea {
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-family: monospace;
+      box-sizing: border-box;
+    }
+    
+    button {
+      margin: 5px;
+      padding: 10px 15px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    
+    button:hover {
+      background-color: #45a049;
+    }
+    
+    .section {
+      margin-bottom: 30px;
+      padding: 20px;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      background-color: #fafafa;
+    }
+    
+    .section h3 {
+      margin-top: 0;
+      color: #555;
+      border-bottom: 2px solid #ff6b6b;
+      padding-bottom: 10px;
+    }
+    
+    #pokemonInput {
+      padding: 8px;
+      margin: 10px 5px;
+      width: 250px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    
+    .pokemon-btn {
+      background-color: #ff6b6b;
+    }
+    
+    .pokemon-btn:hover {
+      background-color: #ff5252;
+    }
+    
+    #abilitiesList {
+      margin-top: 15px;
+      padding: 15px;
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      min-height: 60px;
+      font-size: 14px;
+    }
+    
+    #pokemonImage {
+      max-width: 200px;
+      margin-top: 15px;
+      display: block;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      padding: 5px;
+      background-color: white;
+    }
+    
+    #pokemonXmlOutput {
+      margin-top: 15px;
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 12px;
+      box-sizing: border-box;
+    }
+    
+    .image-caption {
+      margin-top: 5px;
+      font-size: 12px;
+      color: #666;
+      text-align: center;
+    }
+    
+    hr {
+      margin: 20px 0;
+      border: none;
+      border-top: 2px solid #e0e0e0;
+    }
+  </style>
 </head>
 
 <body>
-
-  <textarea id="input"></textarea>
-  <button id="btn">Convertir</button>
-  <button id="xmltojson">XML → JSON</button>
-  <button id="jsontoxml">JSON → XML</button>
-
-  <textarea id="output"></textarea>
+  <div class="container">
+    <h1> Convertidor de Formatos & Pokémon API </h1>
+    
+    <!-- SECCIÓN 1: ACTIVIDADES ANTERIORES -->
+    <div class="section">
+      <h3> Conversor de Texto</h3>
+      <textarea id="input" rows="4" placeholder="Escribe texto aquí..."></textarea>
+      <div>
+        <button id="btn"> Convertir a Mayúsculas</button>
+        <button id="xmltojson"> XML → JSON</button>
+        <button id="jsontoxml"> JSON → XML</button>
+      </div>
+      <textarea id="output" rows="4" placeholder="Resultado..."></textarea>
+    </div>
+    
+    <hr>
+    
+    <!-- SECCIÓN 2: NUEVA ACTIVIDAD 3 - POKEAPI -->
+    <div class="section">
+      <h3> PokeAPI - Información de Pokémon</h3>
+      <div>
+        <input type="text" id="pokemonInput" placeholder="Nombre del Pokémon (ej: pikachu, charmander)">
+        <button id="getPokemonXml" class="pokemon-btn">1️ Obtener XML del Pokémon</button>
+        <button id="getPokemonAbilities" class="pokemon-btn">2️ Mostrar Habilidades</button>
+        <button id="getPokemonImage" class="pokemon-btn">3️ Mostrar Imagen</button>
+      </div>
+      
+      <div id="abilitiesList"></div>
+      <img id="pokemonImage" style="display: none;">
+      <textarea id="pokemonXmlOutput" rows="10" placeholder="El XML del Pokémon aparecerá aquí..."></textarea>
+    </div>
+  </div>
 
   <script src="app.js"></script>
-
 </body>
 
 </html>
