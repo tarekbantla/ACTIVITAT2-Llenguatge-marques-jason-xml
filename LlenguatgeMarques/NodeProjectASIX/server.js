@@ -1,5 +1,6 @@
 const express = require("express");
 const convert = require("xml-js");
+const fetch = require("node-fetch");
 
 const app = express();
 const PORT = 3000;
@@ -42,7 +43,94 @@ app.post("/convertJsontoXML", (req, res) => {
   }
 });
 
-//  SOLO UNA VEZ
+// ==================== NUEVA ACTIVIDAD 3: POKEAPI ====================
+
+// 1. Función que crida a la pokeapi amb el nom d'un Pokémon i retorna un XML
+app.post("/pokemonToXml", async (req, res) => {
+  const { pokemonName } = req.body;
+  
+  if (!pokemonName) {
+    return res.status(400).json({ error: "No se proporcionó nombre de Pokémon" });
+  }
+
+  try {
+    const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonName.toLowerCase()}`);
+    
+    if (!response.ok) {
+      return res.status(404).json({ error: "Pokémon no encontrado" });
+    }
+    
+    const pokemonData = await response.json();
+    const xmlResult = convert.json2xml(JSON.stringify(pokemonData), { compact: true, spaces: 2 });
+    
+    res.json({ result: xmlResult });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error en la conversión Pokémon → XML" });
+  }
+});
+
+// 2. Funció que mostra les habilitats del Pokémon
+app.post("/pokemonAbilities", async (req, res) => {
+  const { pokemonName } = req.body;
+  
+  if (!pokemonName) {
+    return res.status(400).json({ error: "No se proporcionó nombre de Pokémon" });
+  }
+
+  try {
+    const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonName.toLowerCase()}`);
+    
+    if (!response.ok) {
+      return res.status(404).json({ error: "Pokémon no encontrado" });
+    }
+    
+    const pokemonData = await response.json();
+    
+    const abilities = pokemonData.abilities.map(ability => ({
+      name: ability.ability.name,
+      is_hidden: ability.is_hidden,
+      slot: ability.slot
+    }));
+    
+    res.json({ 
+      pokemon: pokemonData.name,
+      abilities: abilities 
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error al obtener habilidades del Pokémon" });
+  }
+});
+
+// 3. Funció que mostra l'imatge del Pokémon
+app.post("/pokemonImage", async (req, res) => {
+  const { pokemonName } = req.body;
+  
+  if (!pokemonName) {
+    return res.status(400).json({ error: "No se proporcionó nombre de Pokémon" });
+  }
+
+  try {
+    const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonName.toLowerCase()}`);
+    
+    if (!response.ok) {
+      return res.status(404).json({ error: "Pokémon no encontrado" });
+    }
+    
+    const pokemonData = await response.json();
+    const imageUrl = pokemonData.sprites.front_default;
+    
+    res.json({ 
+      pokemon: pokemonData.name,
+      imageUrl: imageUrl 
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error al obtener imagen del Pokémon" });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
